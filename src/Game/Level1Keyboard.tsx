@@ -27,7 +27,7 @@ const FOCUS_STYLES: Record<
   good: {
     width: "2px",
     style: "solid",
-    color: "var(--color-bgPrimary)",
+    color: "#3578e5",
     offset: "2px",
     label: "Clear and visible",
   },
@@ -78,20 +78,30 @@ export const Level1Keyboard = ({ onComplete }: Level1KeyboardProps) => {
       style={{ marginLeft: "auto", marginRight: "auto" }}
     >
       <style>{`
-        .game-container button:focus {
-          outline: var(--game-focus-width, 0) var(--game-focus-style, none) var(--game-focus-color, transparent);
-          outline-offset: var(--game-focus-offset, 0);
+        /* Override CDS focus styles so demo focus styles apply correctly */
+        .game-container button:focus,
+        .game-container [role="button"]:focus,
+        .game-container .cds-Interactable:focus,
+        .game-container .cds-Pressable:focus {
+          outline: var(--game-focus-width, 0) var(--game-focus-style, none) var(--game-focus-color, transparent) !important;
+          outline-offset: var(--game-focus-offset, 0) !important;
         }
-        .game-container button:focus:not(:focus-visible) {
-          outline: none;
+        .game-container button:focus:not(:focus-visible),
+        .game-container [role="button"]:focus:not(:focus-visible),
+        .game-container .cds-Interactable:focus:not(:focus-visible),
+        .game-container .cds-Pressable:focus:not(:focus-visible) {
+          outline: none !important;
         }
-        .game-container button:focus-visible {
-          outline: var(--game-focus-width, 0) var(--game-focus-style, none) var(--game-focus-color, transparent);
-          outline-offset: var(--game-focus-offset, 0);
+        .game-container button:focus-visible,
+        .game-container [role="button"]:focus-visible,
+        .game-container .cds-Interactable:focus-visible,
+        .game-container .cds-Pressable:focus-visible {
+          outline: var(--game-focus-width, 0) var(--game-focus-style, none) var(--game-focus-color, transparent) !important;
+          outline-offset: var(--game-focus-offset, 0) !important;
         }
       `}</style>
 
-      <VStack gap={4}>
+      <VStack gap={6}>
         <Text as="h2" display="block" font="headline">
           Level 1: Keyboard navigation
         </Text>
@@ -137,7 +147,7 @@ export const Level1Keyboard = ({ onComplete }: Level1KeyboardProps) => {
         <Box
           as="section"
           aria-labelledby="experience-heading"
-          paddingY={2}
+          paddingY={5}
           borderedBottom
           borderColor="bgLineHeavy"
         >
@@ -146,7 +156,7 @@ export const Level1Keyboard = ({ onComplete }: Level1KeyboardProps) => {
             id="experience-heading"
             display="block"
             font="headline"
-            paddingBottom={1}
+            paddingBottom={2}
           >
             Step 1: Experience broken focus
           </Text>
@@ -155,7 +165,7 @@ export const Level1Keyboard = ({ onComplete }: Level1KeyboardProps) => {
             color="fgMuted"
             display="block"
             font="body"
-            paddingBottom={2}
+            paddingBottom={3}
           >
             Tab through the buttons below. Notice how hard it is to see where
             you are? Many sites hide or weaken focus indicators, which makes
@@ -178,7 +188,7 @@ export const Level1Keyboard = ({ onComplete }: Level1KeyboardProps) => {
         <Box
           as="section"
           aria-labelledby="fix-heading"
-          paddingY={2}
+          paddingY={5}
           borderedBottom
           borderColor="bgLineHeavy"
         >
@@ -187,7 +197,7 @@ export const Level1Keyboard = ({ onComplete }: Level1KeyboardProps) => {
             id="fix-heading"
             display="block"
             font="headline"
-            paddingBottom={1}
+            paddingBottom={2}
           >
             Step 2: Fix the focus indicator
           </Text>
@@ -196,7 +206,7 @@ export const Level1Keyboard = ({ onComplete }: Level1KeyboardProps) => {
             color="fgMuted"
             display="block"
             font="body"
-            paddingBottom={2}
+            paddingBottom={3}
           >
             Choose a focus style below. The outline will update live. Pick the
             one that makes keyboard navigation easy to follow.
@@ -216,13 +226,13 @@ export const Level1Keyboard = ({ onComplete }: Level1KeyboardProps) => {
           </HStack>
         </Box>
 
-        <Box as="section" aria-labelledby="complete-heading" paddingY={2}>
+        <Box as="section" aria-labelledby="complete-heading" paddingY={5}>
           <Text
             as="h3"
             id="complete-heading"
             display="block"
             font="headline"
-            paddingBottom={1}
+            paddingBottom={2}
           >
             Step 3: Complete the level
           </Text>
@@ -231,7 +241,7 @@ export const Level1Keyboard = ({ onComplete }: Level1KeyboardProps) => {
             color="fgMuted"
             display="block"
             font="body"
-            paddingBottom={2}
+            paddingBottom={3}
           >
             {hasFixedFocus
               ? "Tab to the button below and press Enter to continue."
