@@ -4,7 +4,9 @@ import { ThemeProvider } from "@coinbase/cds-web";
 import { defaultTheme } from "@coinbase/cds-web/themes/defaultTheme";
 import { HStack, VStack } from "@coinbase/cds-web/layout";
 import { MediaQueryProvider } from "@coinbase/cds-web/system";
+import { Button } from "@coinbase/cds-web/buttons";
 import { Checkbox, SearchInput, TextInput } from "@coinbase/cds-web/controls";
+import { Link, Text } from "@coinbase/cds-web/typography";
 import { GamePage } from "./Game/GamePage";
 
 const getHash = () => window.location.hash.slice(1) || "/";
@@ -44,38 +46,33 @@ export const App = () => {
       <ThemeProvider theme={defaultTheme} activeColorScheme={activeColorScheme}>
         <VStack background="bg" minHeight="100vh" padding={4} gap={4}>
           <HStack justifyContent="space-between" alignItems="center">
-            <h1 style={{ margin: 0, fontSize: "1.5rem" }}>A11y Examples</h1>
+            <Text as="h1" font="headline">
+              A11y Examples
+            </Text>
             <HStack gap={2}>
-              <a
-                href="#/game"
-                style={{
-                  padding: "8px 16px",
-                  color: "var(--color-fg)",
-                  textDecoration: "none",
-                  border: "1px solid var(--color-bgLineHeavy)",
-                  borderRadius: "8px",
-                }}
-              >
+              <Link href="#/game" font="body">
                 Play GAAD Game
-              </a>
-              <button
-                type="button"
+              </Link>
+              <Button
+                variant="secondary"
+                compact
                 onClick={toggleColorScheme}
-                aria-label={`Switch to ${activeColorScheme === "light" ? "dark" : "light"} mode`}
-                style={{ padding: "8px 16px", cursor: "pointer" }}
+                accessibilityLabel={`Switch to ${activeColorScheme === "light" ? "dark" : "light"} mode`}
               >
                 {activeColorScheme === "light" ? "Dark" : "Light"} mode
-              </button>
+              </Button>
             </HStack>
           </HStack>
 
-          <p style={{ margin: 0, color: "var(--color-fgMuted)" }}>
+          <Text as="p" color="fgMuted" display="block" font="body">
             Accessible form patterns using Coinbase Design System. All controls
             include proper labels, focus management, and keyboard support.
-          </p>
+          </Text>
 
           <VStack gap={3} maxWidth={400}>
-            <h2 style={{ margin: 0, fontSize: "1.25rem" }}>Form controls</h2>
+            <Text as="h2" display="block" font="headline">
+              Form controls
+            </Text>
 
             <SearchInput
               compact
@@ -101,17 +98,14 @@ export const App = () => {
               I agree to the terms
             </Checkbox>
 
-            <button
-              type="button"
+            <Button
+              variant="primary"
               disabled={!agreed}
-              aria-label="Submit form"
-              style={{
-                padding: "8px 16px",
-                cursor: agreed ? "pointer" : "not-allowed",
-              }}
+              onClick={() => {}}
+              accessibilityLabel="Submit form"
             >
               Submit
-            </button>
+            </Button>
           </VStack>
         </VStack>
       </ThemeProvider>

@@ -1,5 +1,8 @@
 import { useState, useCallback, useEffect } from "react";
-import { VStack, HStack } from "@coinbase/cds-web/layout";
+import { Box, HStack, VStack } from "@coinbase/cds-web/layout";
+import { Button } from "@coinbase/cds-web/buttons";
+import { Text } from "@coinbase/cds-web/typography";
+import { Accordion, AccordionItem } from "@coinbase/cds-web/accordion";
 
 type FocusStyleOption = "broken" | "barely" | "good";
 
@@ -24,7 +27,7 @@ const FOCUS_STYLES: Record<
   good: {
     width: "2px",
     style: "solid",
-    color: "#0066cc",
+    color: "var(--color-bgPrimary)",
     offset: "2px",
     label: "Clear and visible",
   },
@@ -36,7 +39,6 @@ type Level1KeyboardProps = {
 
 export const Level1Keyboard = ({ onComplete }: Level1KeyboardProps) => {
   const [focusStyle, setFocusStyle] = useState<FocusStyleOption>("broken");
-  const [guidanceOpen, setGuidanceOpen] = useState(true);
   const [hasFixedFocus, setHasFixedFocus] = useState(false);
 
   const applyFocusStyle = useCallback((option: FocusStyleOption) => {
@@ -68,217 +70,194 @@ export const Level1Keyboard = ({ onComplete }: Level1KeyboardProps) => {
   };
 
   return (
-    <VStack
-      gap={4}
+    <Box
+      className="game-container"
       padding={4}
-      style={{ maxWidth: 640, marginLeft: "auto", marginRight: "auto" }}
+      maxWidth={640}
+      width="100%"
+      style={{ marginLeft: "auto", marginRight: "auto" }}
     >
       <style>{`
-        .game-focusable:focus {
+        .game-container button:focus {
           outline: var(--game-focus-width, 0) var(--game-focus-style, none) var(--game-focus-color, transparent);
           outline-offset: var(--game-focus-offset, 0);
         }
-        .game-focusable:focus:not(:focus-visible) {
+        .game-container button:focus:not(:focus-visible) {
           outline: none;
         }
-        .game-focusable:focus-visible {
+        .game-container button:focus-visible {
           outline: var(--game-focus-width, 0) var(--game-focus-style, none) var(--game-focus-color, transparent);
           outline-offset: var(--game-focus-offset, 0);
         }
       `}</style>
 
-      <h2 style={{ margin: 0, fontSize: "1.5rem" }}>
-        Level 1: Keyboard navigation
-      </h2>
+      <VStack gap={4}>
+        <Text as="h2" display="block" font="headline">
+          Level 1: Keyboard navigation
+        </Text>
 
-      <section aria-labelledby="guidance-heading">
-        <button
-          type="button"
-          id="guidance-heading"
-          className="game-focusable"
-          onClick={() => setGuidanceOpen(!guidanceOpen)}
-          aria-expanded={guidanceOpen}
-          aria-controls="guidance-content"
-          style={{
-            width: "100%",
-            padding: "12px 16px",
-            textAlign: "left",
-            background: "var(--color-bgSecondary)",
-            border: "1px solid var(--color-bgLineHeavy)",
-            borderRadius: "8px",
-            cursor: "pointer",
-            fontSize: "1rem",
-            fontWeight: 600,
-          }}
+        <Accordion defaultActiveKey="guidance">
+          <AccordionItem itemKey="guidance" title="How to use the keyboard">
+            <VStack gap={2} paddingTop={2}>
+              <Box as="ul" paddingStart={4}>
+                <li>
+                  <Text as="span" font="body">
+                    <strong>Tab</strong> — move to the next focusable element
+                  </Text>
+                </li>
+                <li>
+                  <Text as="span" font="body">
+                    <strong>Shift + Tab</strong> — move to the previous element
+                  </Text>
+                </li>
+                <li>
+                  <Text as="span" font="body">
+                    <strong>Enter</strong> — activate buttons and links
+                  </Text>
+                </li>
+                <li>
+                  <Text as="span" font="body">
+                    <strong>Escape</strong> — close modals or cancel
+                  </Text>
+                </li>
+              </Box>
+              <Text as="p" color="fgMuted" display="block" font="body">
+                Try it: Use Tab to move through this page. Look for the focus
+                indicator (outline) around the element you're on.
+              </Text>
+            </VStack>
+          </AccordionItem>
+        </Accordion>
+
+        <Box
+          as="section"
+          aria-labelledby="experience-heading"
+          paddingY={2}
+          borderedBottom
+          borderColor="bgLineHeavy"
         >
-          {guidanceOpen ? "▼" : "▶"} How to use the keyboard
-        </button>
-        {guidanceOpen && (
-          <div
-            id="guidance-content"
-            role="region"
-            aria-labelledby="guidance-heading"
-            style={{
-              padding: "16px",
-              marginTop: "8px",
-              background: "var(--color-bgSecondary)",
-              border: "1px solid var(--color-bgLineHeavy)",
-              borderRadius: "8px",
-            }}
+          <Text
+            as="h3"
+            id="experience-heading"
+            display="block"
+            font="headline"
+            paddingBottom={1}
           >
-            <ul style={{ margin: "0 0 12px 0", paddingLeft: "20px" }}>
-              <li>
-                <strong>Tab</strong> — move to the next focusable element
-              </li>
-              <li>
-                <strong>Shift + Tab</strong> — move to the previous element
-              </li>
-              <li>
-                <strong>Enter</strong> — activate buttons and links
-              </li>
-              <li>
-                <strong>Escape</strong> — close modals or cancel
-              </li>
-            </ul>
-            <p
-              style={{
-                margin: 0,
-                fontSize: "0.9rem",
-                color: "var(--color-fgMuted)",
-              }}
-            >
-              Try it: Use Tab to move through this page. Look for the focus
-              indicator (outline) around the element you’re on.
-            </p>
-          </div>
-        )}
-      </section>
-
-      <section aria-labelledby="experience-heading">
-        <h3
-          id="experience-heading"
-          style={{ margin: "0 0 8px 0", fontSize: "1.125rem" }}
-        >
-          Step 1: Experience broken focus
-        </h3>
-        <p style={{ margin: "0 0 16px 0", color: "var(--color-fgMuted)" }}>
-          Tab through the buttons below. Notice how hard it is to see where you
-          are? Many sites hide or weaken focus indicators, which makes keyboard
-          navigation frustrating.
-        </p>
-        <HStack gap={2} flexWrap="wrap">
-          {["Button A", "Button B", "Button C", "Button D"].map((label) => (
-            <button
-              key={label}
-              type="button"
-              className="game-focusable"
-              style={{
-                padding: "10px 20px",
-                background: "var(--color-bgSecondary)",
-                border: "1px solid var(--color-bgLineHeavy)",
-                borderRadius: "8px",
-                cursor: "pointer",
-                fontSize: "1rem",
-              }}
-            >
-              {label}
-            </button>
-          ))}
-        </HStack>
-      </section>
-
-      <section aria-labelledby="fix-heading">
-        <h3
-          id="fix-heading"
-          style={{ margin: "0 0 8px 0", fontSize: "1.125rem" }}
-        >
-          Step 2: Fix the focus indicator
-        </h3>
-        <p style={{ margin: "0 0 16px 0", color: "var(--color-fgMuted)" }}>
-          Choose a focus style below. The outline will update live. Pick the one
-          that makes keyboard navigation easy to follow.
-        </p>
-        <HStack gap={2} flexWrap="wrap" alignItems="center">
-          {(Object.keys(FOCUS_STYLES) as FocusStyleOption[]).map((option) => (
-            <button
-              key={option}
-              type="button"
-              className="game-focusable"
-              onClick={() => setFocusStyle(option)}
-              aria-pressed={focusStyle === option}
-              aria-label={`Focus style: ${FOCUS_STYLES[option].label}`}
-              style={{
-                padding: "10px 16px",
-                background:
-                  focusStyle === option
-                    ? "var(--color-bgPrimary)"
-                    : "var(--color-bgSecondary)",
-                color:
-                  focusStyle === option
-                    ? "var(--color-fgInverse)"
-                    : "var(--color-fg)",
-                border: "1px solid var(--color-bgLineHeavy)",
-                borderRadius: "8px",
-                cursor: "pointer",
-                fontSize: "0.9rem",
-              }}
-            >
-              {FOCUS_STYLES[option].label}
-            </button>
-          ))}
-        </HStack>
-      </section>
-
-      <section aria-labelledby="complete-heading">
-        <h3
-          id="complete-heading"
-          style={{ margin: "0 0 8px 0", fontSize: "1.125rem" }}
-        >
-          Step 3: Complete the level
-        </h3>
-        <p style={{ margin: "0 0 16px 0", color: "var(--color-fgMuted)" }}>
-          {hasFixedFocus
-            ? "Tab to the button below and press Enter to continue."
-            : "First pick a clear focus style above, then tab to the button and press Enter."}
-        </p>
-        <button
-          type="button"
-          className="game-focusable"
-          onClick={handleContinue}
-          disabled={focusStyle !== "good"}
-          aria-describedby={focusStyle !== "good" ? "complete-hint" : undefined}
-          style={{
-            padding: "12px 24px",
-            background:
-              focusStyle === "good"
-                ? "var(--color-bgPrimary)"
-                : "var(--color-bgSecondary)",
-            color:
-              focusStyle === "good"
-                ? "var(--color-fgInverse)"
-                : "var(--color-fgMuted)",
-            border: "1px solid var(--color-bgLineHeavy)",
-            borderRadius: "8px",
-            cursor: focusStyle === "good" ? "pointer" : "not-allowed",
-            fontSize: "1rem",
-            fontWeight: 600,
-          }}
-        >
-          Continue to next level
-        </button>
-        {focusStyle !== "good" && (
-          <p
-            id="complete-hint"
-            style={{
-              margin: "8px 0 0 0",
-              fontSize: "0.875rem",
-              color: "var(--color-fgMuted)",
-            }}
+            Step 1: Experience broken focus
+          </Text>
+          <Text
+            as="p"
+            color="fgMuted"
+            display="block"
+            font="body"
+            paddingBottom={2}
           >
-            Tip: Select &quot;Clear and visible&quot; to enable this button.
-          </p>
-        )}
-      </section>
-    </VStack>
+            Tab through the buttons below. Notice how hard it is to see where
+            you are? Many sites hide or weaken focus indicators, which makes
+            keyboard navigation frustrating.
+          </Text>
+          <HStack gap={2} flexWrap="wrap">
+            {["Button A", "Button B", "Button C", "Button D"].map((label) => (
+              <Button
+                key={label}
+                variant="secondary"
+                onClick={() => {}}
+                accessibilityLabel={label}
+              >
+                {label}
+              </Button>
+            ))}
+          </HStack>
+        </Box>
+
+        <Box
+          as="section"
+          aria-labelledby="fix-heading"
+          paddingY={2}
+          borderedBottom
+          borderColor="bgLineHeavy"
+        >
+          <Text
+            as="h3"
+            id="fix-heading"
+            display="block"
+            font="headline"
+            paddingBottom={1}
+          >
+            Step 2: Fix the focus indicator
+          </Text>
+          <Text
+            as="p"
+            color="fgMuted"
+            display="block"
+            font="body"
+            paddingBottom={2}
+          >
+            Choose a focus style below. The outline will update live. Pick the
+            one that makes keyboard navigation easy to follow.
+          </Text>
+          <HStack gap={2} flexWrap="wrap" alignItems="center">
+            {(Object.keys(FOCUS_STYLES) as FocusStyleOption[]).map((option) => (
+              <Button
+                key={option}
+                variant={focusStyle === option ? "primary" : "secondary"}
+                onClick={() => setFocusStyle(option)}
+                aria-pressed={focusStyle === option}
+                accessibilityLabel={`Focus style: ${FOCUS_STYLES[option].label}`}
+              >
+                {FOCUS_STYLES[option].label}
+              </Button>
+            ))}
+          </HStack>
+        </Box>
+
+        <Box as="section" aria-labelledby="complete-heading" paddingY={2}>
+          <Text
+            as="h3"
+            id="complete-heading"
+            display="block"
+            font="headline"
+            paddingBottom={1}
+          >
+            Step 3: Complete the level
+          </Text>
+          <Text
+            as="p"
+            color="fgMuted"
+            display="block"
+            font="body"
+            paddingBottom={2}
+          >
+            {hasFixedFocus
+              ? "Tab to the button below and press Enter to continue."
+              : "First pick a clear focus style above, then tab to the button and press Enter."}
+          </Text>
+          <VStack gap={1}>
+            <Button
+              variant="primary"
+              onClick={handleContinue}
+              disabled={focusStyle !== "good"}
+              accessibilityLabel="Continue to next level"
+              aria-describedby={
+                focusStyle !== "good" ? "complete-hint" : undefined
+              }
+            >
+              Continue to next level
+            </Button>
+            {focusStyle !== "good" && (
+              <Text
+                id="complete-hint"
+                as="p"
+                color="fgMuted"
+                display="block"
+                font="body"
+              >
+                Tip: Select &quot;Clear and visible&quot; to enable this button.
+              </Text>
+            )}
+          </VStack>
+        </Box>
+      </VStack>
+    </Box>
   );
 };
