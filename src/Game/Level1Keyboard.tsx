@@ -99,18 +99,23 @@ export const Level1Keyboard = ({ onComplete }: Level1KeyboardProps) => {
         <Accordion defaultActiveKey="guidance">
           <AccordionItem itemKey="guidance" title="How to use the keyboard">
             <VStack gap={2} paddingTop={2}>
-              <Box as="ul" paddingStart={4}>
-                <li>
+              <Box
+                as="ul"
+                display="block"
+                paddingStart={4}
+                style={{ listStylePosition: "outside" }}
+              >
+                <li style={{ marginBottom: "var(--space-2)" }}>
                   <Text as="span" font="body">
                     <strong>Tab</strong> — move to the next focusable element
                   </Text>
                 </li>
-                <li>
+                <li style={{ marginBottom: "var(--space-2)" }}>
                   <Text as="span" font="body">
                     <strong>Shift + Tab</strong> — move to the previous element
                   </Text>
                 </li>
-                <li>
+                <li style={{ marginBottom: "var(--space-2)" }}>
                   <Text as="span" font="body">
                     <strong>Enter</strong> — activate buttons and links
                   </Text>

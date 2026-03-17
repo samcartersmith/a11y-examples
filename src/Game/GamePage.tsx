@@ -34,14 +34,19 @@ export const GamePage = () => {
             web.
           </Text>
 
-          <Box as="ol" paddingStart={4}>
-            <li>
+          <Box
+            as="ol"
+            display="block"
+            paddingStart={4}
+            style={{ listStylePosition: "outside" }}
+          >
+            <li style={{ marginBottom: "var(--space-2)" }}>
               <Text as="span" font="body">
                 <strong>Level 1: Keyboard</strong> — Navigate with Tab and
                 Enter, and fix a broken focus indicator.
               </Text>
             </li>
-            <li>
+            <li style={{ marginBottom: "var(--space-2)" }}>
               <Text as="span" font="body">
                 <strong>Level 2: Screen reader</strong> — Find hidden content
                 using a screen reader. (Coming soon)
